@@ -37,6 +37,7 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     // Calculate the total price of the cart
@@ -215,8 +216,4 @@ class OrderPlacedPage extends StatelessWidget {
       ),
     );
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 8e052561b12fa0fa1fdfad118dbdb0a29416a548

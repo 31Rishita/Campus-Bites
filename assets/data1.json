@@ -1,0 +1,72 @@
+[
+  {
+    "restNAme": "fastfood",
+    "menuItems": [
+      {
+        "Image": "assets/images/cfr.jpg",
+        "Name": "Chicken Fried rice",
+        "price": "180"
+      },
+      {
+        "Image": "assets/images/ch65.jpg",
+        "Name": "Chicken 65",
+        "price": "220"
+      },
+      {
+        "Image": "assets/images/cm.jpg",
+        "Name": "Chicken Manchurian",
+        "price": "120"
+      },
+      {
+        "Image": "assets/images/cn.jpg",
+        "Name": "Chicken Noodles",
+        "price": "120"
+      }
+    ]
+  },
+  {
+    "restNAme": "tiffins",
+    "menuItems": [
+      {
+        "Image": "assets/images/tiffins1.jpg",
+        "Name": "Veg Tiffin",
+        "price": "150"
+      },
+      {
+        "Image": "assets/images/tiffins2.jpg",
+        "Name": "Rice Tiffin",
+        "price": "120"
+      }
+    ]
+  },
+  {
+    "restNAme": "juices",
+    "menuItems": [
+      {
+        "Image": "assets/images/juices1.jpg",
+        "Name": "Mango Juice",
+        "price": "89"
+      },
+      {
+        "Image": "assets/images/juices2.jpg",
+        "Name": "Apple Juice",
+        "price": "100"
+      }
+    ]
+  },
+  {
+    "restNAme": "panipuri",
+    "menuItems": [
+      {
+        "Image": "assets/images/panipuri1.jpg",
+        "Name": "Pani Puri",
+        "price": "50"
+      },
+      {
+        "Image": "assets/images/panipuri2.jpg",
+        "Name": "Sev Puri",
+        "price": "60"
+      }
+    ]
+  }
+]
