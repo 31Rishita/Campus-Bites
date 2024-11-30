@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:login_signup/widgets/custom_scaffold.dart';
 
 class CartPage extends StatefulWidget {
   final List<Map<String, dynamic>> cartItems;
 
-  CartPage({required this.cartItems});
+  const CartPage({super.key, required this.cartItems});
 
   @override
   _CartPageState createState() => _CartPageState();
@@ -29,32 +30,19 @@ class _CartPageState extends State<CartPage> {
     });
   }
 
-  // Method to navigate to OrderPlacedPage
-  void goToOrderPlacedPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => OrderPlacedPage()),
-    );
-  }
-
-
   @override
   Widget build(BuildContext context) {
     // Calculate the total price of the cart
     double total = 0;
     for (var item in widget.cartItems) {
-      total += item['price'] * item['quantity'];
+      // Ensure price is treated as double (in case it's coming as a string)
+      double price = item['price'] is String ? double.parse(item['price']) : item['price'];
+      total += price * item['quantity']; // 'price' is now a double
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Cart"),
-        backgroundColor: const Color.fromARGB(255, 244, 243, 243),
-        centerTitle: true,
-        elevation: 8,
-      ),
-      body: widget.cartItems.isEmpty
-          ? Center(
+    return CustomScaffold(
+      child: widget.cartItems.isEmpty
+          ? const Center(
               child: Text(
                 "Your cart is empty.",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -68,6 +56,10 @@ class _CartPageState extends State<CartPage> {
                     child: ListView.builder(
                       itemCount: widget.cartItems.length,
                       itemBuilder: (context, index) {
+                        double price = widget.cartItems[index]['price'] is String
+                            ? double.parse(widget.cartItems[index]['price'])
+                            : widget.cartItems[index]['price'];
+                        
                         return Card(
                           elevation: 8,
                           shadowColor: Colors.grey.shade300,
@@ -83,20 +75,20 @@ class _CartPageState extends State<CartPage> {
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image.asset(
-                                    widget.cartItems[index]['image'],
+                                    widget.cartItems[index]['Image'],
                                     height: 60,
                                     width: 60, // Square shape
                                     fit: BoxFit.cover,
                                   ),
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 // Item name and quantity
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        widget.cartItems[index]['name'],
+                                        widget.cartItems[index]['Name'],
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
@@ -106,8 +98,8 @@ class _CartPageState extends State<CartPage> {
                                       Row(
                                         children: [
                                           Text(
-                                            '₹${widget.cartItems[index]['price']} x ${widget.cartItems[index]['quantity']}',
-                                            style: TextStyle(
+                                            '₹${price} x ${widget.cartItems[index]['quantity']}',
+                                            style: const TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.bold,
                                               color: Colors.green,
@@ -123,7 +115,7 @@ class _CartPageState extends State<CartPage> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     IconButton(
-                                      icon: Icon(Icons.remove, color: Colors.redAccent),
+                                      icon: const Icon(Icons.remove, color: Colors.redAccent),
                                       onPressed: () => decrementQuantity(index),
                                     ),
                                     Text(
@@ -135,18 +127,18 @@ class _CartPageState extends State<CartPage> {
                                       ),
                                     ),
                                     IconButton(
-                                      icon: Icon(Icons.add, color: Colors.green),
+                                      icon: const Icon(Icons.add, color: Colors.green),
                                       onPressed: () => incrementQuantity(index),
                                     ),
                                   ],
                                 ),
                                 // Total price for the item
                                 Text(
-                                  '₹${widget.cartItems[index]['price'] * widget.cartItems[index]['quantity']}',
+                                  '₹${(price * widget.cartItems[index]['quantity']).toStringAsFixed(2)}',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.brown.shade600,
+                                    color: Colors.blue.shade800,
                                   ),
                                 ),
                               ],
@@ -156,64 +148,39 @@ class _CartPageState extends State<CartPage> {
                       },
                     ),
                   ),
-                  Divider(),
+                  // Display total price
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Total: ",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          '₹${total.toStringAsFixed(2)}',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green,
-                          ),
-                        ),
-                      ],
+                    child: Text(
+                      'Total: ₹${total.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  // Pay Total Amount Button
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      onPressed: goToOrderPlacedPage,
-                      child: Text('Pay Total Amount'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green, // Green color
-                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                        textStyle: TextStyle(fontSize: 18),
-                      ),
+                  // Pay button (can show a confirmation message or navigate to another page)
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange.shade700,
+                    ),
+                    onPressed: () {
+                      // For now, show a simple confirmation message instead of navigating
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Order Placed Successfully!'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Pay Total Amount',
+                      style: TextStyle(fontSize: 16),
                     ),
                   ),
                 ],
               ),
             ),
-    );
-  }
-}
-
-class OrderPlacedPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Order Placed"),
-        backgroundColor: Colors.green,
-      ),
-      body: Center(
-        child: Text(
-          "Your order has been placed successfully!",
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-      ),
     );
   }
 }

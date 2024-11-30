@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:login_signup/widgets/custom_scaffold.dart';
 import 'cart_page.dart';
 
 class MenuPage extends StatefulWidget {
@@ -38,14 +39,14 @@ class _MenuPageState extends State<MenuPage> {
     setState(() {
       var existingItem = cartItems.firstWhere(
         (cartItem) => cartItem['Name'] == item['Name'],
-        orElse: () => {},
+        orElse: () => {}, // If item is not found, return an empty map
       );
 
       if (existingItem.isEmpty) {
         cartItems.add({
           'Name': item['Name'],
           'Image': item['Image'],
-          'price': item['price'],
+          'price': double.parse(item['price'].toString()), // Ensure price is a double
           'quantity': 1,
         });
       } else {
@@ -53,6 +54,7 @@ class _MenuPageState extends State<MenuPage> {
       }
     });
 
+    // Show snack bar confirmation
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('${item['Name']} added to cart!'),
@@ -63,14 +65,10 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.restaurantName),
-        backgroundColor: Colors.orange.shade700,
-      ),
-      body: Stack(
+    return CustomScaffold(
+      child: Stack(
         children: [
-          FutureBuilder<List<Map<String, dynamic>>>(
+          FutureBuilder<List<Map<String, dynamic>>>( 
             future: loadMenuItems(context),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -86,7 +84,7 @@ class _MenuPageState extends State<MenuPage> {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: 12,
                     crossAxisSpacing: 12,
@@ -95,58 +93,79 @@ class _MenuPageState extends State<MenuPage> {
                   itemCount: menuItems.length,
                   itemBuilder: (context, index) {
                     return Card(
-                      elevation: 8,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: Image.asset(
-                              menuItems[index]['Image'],
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity,
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            color: Colors.black.withOpacity(0.6),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  menuItems[index]['Name'],
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                SizedBox(height: 4),
-                                Text(
-                                  '₹${menuItems[index]['price']}',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                SizedBox(height: 4),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.orange.shade700,
-                                  ),
-                                  onPressed: () => addToCart(menuItems[index]),
-                                  child: Text('Add to Cart'),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
+  elevation: 8,  // Elevates the card above its background
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(15),  // Rounded corners for the card
+  ),
+  child: Stack(  // Stack is used to overlay the content on top of each other
+    alignment: Alignment.bottomCenter,  // Align the content at the bottom of the card
+    children: [
+      // Image container
+      ClipRRect(
+        borderRadius: BorderRadius.circular(15),  // Rounded corners for the image
+        child: Image.asset(
+          menuItems[index]['Image'],  // The image file path for the menu item
+          fit: BoxFit.cover,  // Ensures the image covers the container without distorting
+          width: double.infinity,  // Make the image take up the full width of the card
+          height: double.infinity,  // Make the image take up the full height of the card
+        ),
+      ),
+      // Overlay container for name, price, and button
+      Positioned(
+        bottom: 0,  // Positions the container at the bottom of the card
+        left: 0,  // Aligns it to the left side
+        right: 0,  // Aligns it to the right side
+        child: Container(
+          padding: const EdgeInsets.all(8),  // Padding around the content inside the container
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.6),  // Semi-transparent black background to make text readable
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(15),  // Match the card's rounded corners
+              bottomRight: Radius.circular(15),
+            ),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,  // Shrinks the column size to fit the children
+            children: [
+              // Item name
+              Text(
+                menuItems[index]['Name'],  // The name of the menu item
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,  // White color text to contrast with the dark background
+                ),
+                textAlign: TextAlign.center,  // Center the text
+              ),
+              const SizedBox(height: 4),  // Spacer between text elements
+              // Item price
+              Text(
+                '₹${menuItems[index]['price']}',  // The price of the menu item
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.white,  // White color text for the price
+                ),
+                textAlign: TextAlign.center,  // Center the text
+              ),
+              const SizedBox(height: 8),  // Spacer between price and button
+              // Add to Cart button
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(150, 36),  // Reduce the button size (width, height)
+                  backgroundColor: Colors.orange.shade700,  // Background color for the button
+                ),
+                onPressed: () => addToCart(menuItems[index]),  // Adds the item to the cart when pressed
+                child: const Text('Add to Cart'),  // Button label
+              ),
+            ],
+          ),
+        ),
+      ),
+    ],
+  ),
+);
+
+
                   },
                 ),
               );
@@ -165,7 +184,7 @@ class _MenuPageState extends State<MenuPage> {
                   ),
                 );
               },
-              child: Icon(Icons.shopping_cart),
+              child: const Icon(Icons.shopping_cart),
             ),
           ),
         ],

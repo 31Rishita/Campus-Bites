@@ -5,22 +5,22 @@
       {
         "Image": "assets/images/cfr.jpg",
         "Name": "Chicken Fried rice",
-        "price": "180"
+        "price": 180.0
       },
       {
         "Image": "assets/images/ch65.jpg",
         "Name": "Chicken 65",
-        "price": "220"
+        "price": 220.0
       },
       {
         "Image": "assets/images/cm.jpg",
         "Name": "Chicken Manchurian",
-        "price": "120"
+        "price": 120.0
       },
       {
         "Image": "assets/images/cn.jpg",
         "Name": "Chicken Noodles",
-        "price": "120"
+        "price": 120.0
       }
     ]
   },
@@ -30,12 +30,12 @@
       {
         "Image": "assets/images/tiffins1.jpg",
         "Name": "Veg Tiffin",
-        "price": "150"
+        "price": 150.0
       },
       {
         "Image": "assets/images/tiffins2.jpg",
         "Name": "Rice Tiffin",
-        "price": "120"
+        "price": 120.0
       }
     ]
   },
@@ -45,12 +45,12 @@
       {
         "Image": "assets/images/juices1.jpg",
         "Name": "Mango Juice",
-        "price": "89"
+        "price": 89.0
       },
       {
         "Image": "assets/images/juices2.jpg",
         "Name": "Apple Juice",
-        "price": "100"
+        "price": 100.0
       }
     ]
   },
@@ -60,12 +60,12 @@
       {
         "Image": "assets/images/panipuri1.jpg",
         "Name": "Pani Puri",
-        "price": "50"
+        "price": 50.0
       },
       {
         "Image": "assets/images/panipuri2.jpg",
         "Name": "Sev Puri",
-        "price": "60"
+        "price": 60.0
       }
     ]
   }
