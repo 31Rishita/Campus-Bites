@@ -13,13 +13,11 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final _formSignInKey = GlobalKey<FormState>();
-  bool rememberPassword = true;
 
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
       drawer: Drawer(
-        // Add your Drawer content here (e.g., list of items)
         child: ListView(
           children: <Widget>[
             ListTile(
@@ -137,39 +135,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       const SizedBox(
                         height: 25.0,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Checkbox(
-                                value: rememberPassword,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    rememberPassword = value!;
-                                  });
-                                },
-                                activeColor: const Color.fromARGB(255, 221, 184, 93),
-                              ),
-                              const Text(
-                                'Remember me',
-                                style: TextStyle(
-                                  color: Colors.black45,
-                                ),
-                              ),
-                            ],
-                          ),
-                          GestureDetector(
-                            child: const Text(
-                              'Forget password?',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 229, 197, 102),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                       const SizedBox(
                         height: 25.0,
                       ),
@@ -177,18 +142,12 @@ class _SignInScreenState extends State<SignInScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            if (_formSignInKey.currentState!.validate() &&
-                                rememberPassword) {
+                            if (_formSignInKey.currentState!.validate()) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const HomeScreen()),
-                              );
-                            } else if (!rememberPassword) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'Please agree to the processing of personal data')),
+                                  builder: (context) => const HomeScreen(),
+                                ),
                               );
                             }
                           },

@@ -154,33 +154,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(
                         height: 25.0,
                       ),
-                      // I agree to the processing
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: agreePersonalData,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                agreePersonalData = value!;
-                              });
-                            },
-                            activeColor: lightColorScheme.primary,
-                          ),
-                          const Text(
-                            'I agree to the processing of ',
-                            style: TextStyle(
-                              color: Colors.black45,
-                            ),
-                          ),
-                          Text(
-                            'Personal data',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: lightColorScheme.primary,
-                            ),
-                          ),
-                        ],
-                      ),
                       const SizedBox(
                         height: 25.0,
                       ),
